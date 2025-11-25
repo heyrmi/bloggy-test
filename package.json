@@ -1,0 +1,49 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "test:debug": "npx playwright test --debug",
+    "test:chrome": "npx playwright test --project=Chrome",
+    "test:firefox": "npx playwright test --project=Firefox",
+    "test:safari": "npx playwright test --project=Safari",
+    "test:mobile": "npx playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "test:homepage": "npx playwright test tests/ui/homepage.test.ts",
+    "test:parallel": "npx playwright test --workers=5",
+    "test:serial": "npx playwright test --workers=1",
+    "test:api": "npx playwright test tests/api",
+    "test:api:auth": "npx playwright test tests/api/auth-api.test.ts",
+    "test:api:blog": "npx playwright test tests/api/blog-api.test.ts",
+    "test:api:comment": "npx playwright test tests/api/comment-api.test.ts",
+    "test:api:upload": "npx playwright test tests/api/upload-api.test.ts",
+    "test:api:health": "npx playwright test tests/api/health-api.test.ts",
+    "test:api:debug": "npx playwright test tests/api --debug",
+    "test:api:headed": "npx playwright test tests/api --headed",
+    "test:api:serial": "npx playwright test tests/api --workers=1",
+    "report": "npx playwright show-report",
+    "report:allure": "allure generate allure-results --clean && allure open",
+    "codegen": "npx playwright codegen",
+    "install:browsers": "npx playwright install --with-deps"
+  },
+  "keywords": [],
+  "author": "Rahul Mishra",
+  "description": "Tests for the blog application API and DB",
+  "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.1",
+    "allure-playwright": "^3.4.2",
+    "dotenv": "^17.2.3",
+    "ortoni-report": "^4.0.1",
+    "rimraf": "^6.1.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.4.6",
+    "exceljs": "^4.4.0",
+    "winston": "^3.18.3"
+  }
+}

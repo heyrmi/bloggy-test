@@ -1,0 +1,20 @@
+{
+  "blogPosts": [
+    {
+      "title": "Getting Started with TypeScript",
+      "category": "Programming",
+      "status": "published",
+      "views": 252,
+      "likes": 26,
+      "comments": 4
+    },
+    {
+      "title": "Modern React Patterns in 2024",
+      "category": "Web Development",
+      "status": "published",
+      "views": 516,
+      "likes": 97,
+      "comments": 1
+    }
+  ]
+}
