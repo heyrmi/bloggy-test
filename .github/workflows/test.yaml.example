@@ -1,0 +1,80 @@
+# This file should be placed in the boggy application root directory
+# We would need to build & run the client and server and then run the test
+name: E2E Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    # disable this job for now
+    if: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc # use .nvmrc in the code to refer the version
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Start servers
+        run: |
+          npm run dev > server-logs.txt 2>&1 &
+          echo $! > server.pid
+
+      - name: Wait for servers to start
+        run: |
+          echo "Waiting for backend server..."
+          for i in {1..30}; do
+            if curl -f http://localhost:3001 2>/dev/null; then
+              echo "✓ Backend is up!"
+              break
+            fi
+            echo "Waiting for backend... ($i/30)"
+            sleep 2
+          done
+
+          echo "Waiting for frontend server..."
+          for i in {1..30}; do
+            if curl -f http://localhost:5173 2>/dev/null; then
+              echo "✓ Frontend is up!"
+              break
+            fi
+            echo "Waiting for frontend... ($i/30)"
+            sleep 2
+          done
+
+          echo "Both servers are ready!"
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        working-directory: ./test
+
+      - name: Run Playwright tests
+        run: npm test
+        working-directory: ./test
+        env:
+          CI: true
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: test/playwright-report/
+          retention-days: 7
